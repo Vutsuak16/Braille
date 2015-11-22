@@ -1,0 +1,328 @@
+int ledpin1=13;
+int ledpin2=14;
+int ledpin3=3;
+int ledpin4=4;
+int ledpin5=5;
+int ledpin6=6;
+int ledpin7=7;
+int ledpin8=8;
+int ledpin9=9;
+int ledpin10=10;
+int ledpin11=11;
+int ledpin12=12;
+#include <EEPROM.h>
+int state1=EEPROM.read(0);
+int state2=EEPROM.read(1);
+int state3=EEPROM.read(2);
+int state4=EEPROM.read(3);
+int state5=EEPROM.read(4);
+int state6=EEPROM.read(5);
+int iB=0;
+int read_duration=1000;
+int actuation_time=1000;
+void setup()
+{
+  
+  pinMode(ledpin1,OUTPUT);
+  pinMode(ledpin2,OUTPUT);
+  pinMode(ledpin3,OUTPUT);
+  pinMode(ledpin4,OUTPUT);
+  pinMode(ledpin5,OUTPUT);
+  pinMode(ledpin6,OUTPUT);
+  pinMode(ledpin7,OUTPUT);
+  pinMode(ledpin8,OUTPUT);
+  pinMode(ledpin9,OUTPUT);
+  pinMode(ledpin10,OUTPUT);
+  pinMode(ledpin11,OUTPUT);
+  pinMode(ledpin12,OUTPUT);
+  digitalWrite(ledpin1,LOW);
+  digitalWrite(ledpin2,LOW);
+  digitalWrite(ledpin3,LOW);
+  digitalWrite(ledpin4,LOW);
+  digitalWrite(ledpin5,LOW);
+  digitalWrite(ledpin6,LOW);
+  digitalWrite(ledpin7,LOW);
+  digitalWrite(ledpin8,LOW);
+  digitalWrite(ledpin9,LOW);
+  digitalWrite(ledpin10,LOW);
+  digitalWrite(ledpin11,LOW);
+  digitalWrite(ledpin12,LOW);
+  Serial.begin(9600);
+
+}
+//functions to move the motor in anticlockwise direction
+void SL ( int num, ... )
+{
+  va_list arguments;                     
+  int check;
+
+  /* Initializing arguments to store all values after num */
+  va_start ( arguments, num );           
+  for(int i=1;i<=num;i++)
+  {
+
+    check=va_arg(arguments,int);
+    if(check==1 && state1 != 0)
+    {
+      digitalWrite(ledpin1,LOW);
+      digitalWrite(ledpin2,HIGH);
+      state1=0;
+    }
+    if(check==2 && state2 != 0)
+    {
+      digitalWrite(ledpin3,LOW);
+      digitalWrite(ledpin4,HIGH);
+      state2=0;
+    }
+    if(check==3 && state3 != 0)
+    {
+      digitalWrite(ledpin5,LOW);
+      digitalWrite(ledpin6,HIGH);
+      state3=0;
+    }
+    if(check==4 && state4 != 0)
+    {
+      digitalWrite(ledpin7,LOW);
+      digitalWrite(ledpin8,HIGH);
+      state4=0;
+    }
+    if(check==5 && state5 != 0)
+    {
+      digitalWrite(ledpin9,LOW);
+      digitalWrite(ledpin10,HIGH);
+      state5=0;
+    }
+    if(check==6 && state6 != 0)
+    {
+      digitalWrite(ledpin11,LOW);
+      digitalWrite(ledpin12,HIGH);
+      state6=0;
+    }
+  }
+  
+   
+  va_end ( arguments );                  // Cleans up the list
+}
+//functions to move the motor in clockwise direction
+void SH ( int num, ... )
+{
+  va_list arguments;                     
+  int check;
+
+  /* Initializing arguments to store all values after num */
+  va_start ( arguments, num );           
+  for(int i=1;i<=num;i++)
+  {
+
+    check=va_arg(arguments,int);
+    if(check==1 && state1 != 1)
+    {
+      digitalWrite(ledpin1,HIGH);
+      digitalWrite(ledpin2,LOW);
+      state1=1;
+    }
+    if(check==2 && state2 != 1)
+    {
+      digitalWrite(ledpin3,HIGH);
+      digitalWrite(ledpin4,LOW);
+      state2=1;
+    }
+    if(check==3 && state3 != 1)
+    {
+      digitalWrite(ledpin5,HIGH);
+      digitalWrite(ledpin6,LOW);
+      state3=1;
+    }
+    if(check==4 && state4 != 1)
+    {
+      digitalWrite(ledpin7,HIGH);
+      digitalWrite(ledpin8,LOW);
+      state4=1;
+    }
+    if(check==5 && state5 != 1)
+    {
+      digitalWrite(ledpin9,HIGH);
+      digitalWrite(ledpin10,LOW);
+      state5=1;
+    }
+    if(check==6 && state6 != 1)
+    {
+      digitalWrite(ledpin11,HIGH);
+      digitalWrite(ledpin12,LOW);
+      state6=1;
+    }
+   }
+   
+     delay(actuation_time);
+   digitalWrite(ledpin1,LOW);
+   digitalWrite(ledpin2,LOW);
+   digitalWrite(ledpin3,LOW);
+   digitalWrite(ledpin4,LOW);
+   digitalWrite(ledpin5,LOW);
+   digitalWrite(ledpin6,LOW);
+   digitalWrite(ledpin7,LOW);
+   digitalWrite(ledpin8,LOW);
+   digitalWrite(ledpin9,LOW);
+   digitalWrite(ledpin10,LOW);
+   digitalWrite(ledpin11,LOW);
+   digitalWrite(ledpin12,LOW); 
+  va_end ( arguments );                  // Cleans up the list
+ 
+
+}
+
+void loop()
+{
+
+  if (Serial.available() > 0) {
+    // read the incoming byte:
+    iB = Serial.read();
+
+    //Serial.printlnuiB);
+    if(iB==65 || iB==97)
+    {
+      SL(5,2,3,4,5,6);
+      SH(1,1);
+    }
+    else if(iB==66 || iB==98)
+    {
+      SL(4,2,4,5,6);
+      SH(2,1,3);  
+    }
+    else if(iB==67 || iB==99)
+    {
+      SL(4,3,4,5,6);
+      SH(2,1,2);
+    }
+    else if(iB==68 || iB==100)
+    {
+      SL(3,3,5,6);
+      SH(3,1,2,4);
+    }
+    else if(iB==69 || iB==101)
+    {
+      SL(4,2,3,5,6);
+      SH(2,1,4);
+    }
+    else if(iB==70 || iB==102)
+    {
+      SL(3,4,5,6);
+      SH(3,1,2,3);
+      
+    }
+    else if(iB==71 || iB==103)
+    {
+      SL(2,5,6);
+      SH(4,1,2,3,4);
+    }
+    else if(iB==72 || iB==104)
+    {
+      SL(3,2,5,6);
+      SH(3,1,3,4);
+    }
+    else if(iB==73 || iB==105)
+    {
+      SL(3,1,5,6);
+      SH(3,2,3,4);
+    }
+    else if(iB==74 || iB==106)
+    {
+      SL(3,1,5,6);
+      SH(3,2,4,3);
+    }
+    else if(iB==75 || iB==107)
+    {
+      SL(4,2,3,4,6);
+      SH(2,1,5);
+    }
+    else if(iB==76 || iB==108)
+    {
+      SL(3,2,4,6);
+      SH(3,1,3,5);
+    }
+    else if(iB==77 || iB==109)
+    {
+      SL(3,3,4,6);
+      SH(3,1,2,5);
+    }
+    else if(iB==78 || iB==110)
+    {
+      SL(2,3,6);
+      SH(4,1,2,4,5);
+    }
+    else if(iB==79 || iB==111)
+    {
+      SL(3,2,3,6);
+      
+      SH(3,1,4,5);
+    }
+    else if(iB==80 || iB==112)
+    {
+      SL(2,4,6);
+      SH(4,1,2,3,5);
+    }
+    else if(iB==81 || iB==113)
+    {
+      SL(1,6);
+      SH(5,1,2,3,4,5);
+    }
+    else if(iB==82 || iB==114)
+    {
+      SL(2,2,6);
+      SH(4,1,3,5,4);
+    }
+    else if(iB==83 || iB==115)
+    {
+      SL(3,1,4,6);
+      SH(3,2,3,5);
+    }
+    else if(iB==84 || iB==116)
+    {
+      SL(2,1,6);
+      SH(4,2,3,4,5);
+    }
+    else if(iB==85 || iB==117)
+    {
+      SL(3,2,3,4);
+      SH(3,1,5,6);
+    }
+    else if(iB==86 || iB==118)
+    {
+      SL(2,2,4);
+      SH(4,1,3,5,6);
+    }
+    else if(iB==87 || iB==119)
+    {
+      SL(2,1,5);
+      SH(4,2,3,4,6);
+      }
+    else if(iB==88 || iB==120)
+      {
+        SL(2,3,4);
+        SH(4,1,2,5,6);
+      }
+    else if(iB==89 || iB==121)
+    {
+      SL(1,3);
+      SH(5,1,2,4,5,6);
+    }
+    else if(iB==90 || iB==122)
+    {
+      SL(2,2,3);
+      SH(4,1,4,5,6);
+    }
+    delay(read_duration);
+    EEPROM.write(0,state1);    
+    EEPROM.write(1,state2);
+    EEPROM.write(2,state3);
+    EEPROM.write(3,state4);
+    EEPROM.write(4,state5);
+    EEPROM.write(5,state6);
+  }
+  
+
+ 
+}
+
+
+
